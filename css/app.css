@@ -281,6 +281,28 @@ section {
   font-size: 1.2rem;
   display: block;
 }
+.feedback .en,
+.note .en {
+  display: block;
+}
+.note .en {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+.note .ex {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--font-display);
+}
+/* 파스텔 위라 muted 대신 ink 계열 그대로, 크기로만 누른다 */
+.seg em {
+  display: block;
+  font-style: normal;
+  font-size: 0.68rem;
+  font-weight: 800;
+  margin-top: 2px;
+}
 .feedback .en {
   font-size: 0.85rem;
   font-weight: 700;

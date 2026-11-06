@@ -140,15 +140,15 @@ function render() {
     <div class="digits">${ampm} ${h}:${pad(m)}</div>
     <div class="segments">
       <div class="seg seg-ampm"><small>${pm ? "PM" : "AM"}</small><span>${ampm}</span></div>
-      <div class="seg seg-hour"><small>${h}시 · 고유어</small><span>${readHour(h)}</span></div>
+      <div class="seg seg-hour"><small>${h}시 · 고유어</small><span>${readHour(h)}</span><em>Native Korean</em></div>
       ${
         m
-          ? `<div class="seg seg-min"><small>${m}분 · 한자어</small><span>${readMin(m)}</span></div>`
-          : `<div class="seg seg-sharp"><small>${m}분</small><span>정각</span></div>`
+          ? `<div class="seg seg-min"><small>${m}분 · 한자어</small><span>${readMin(m)}</span><em>Sino-Korean</em></div>`
+          : `<div class="seg seg-sharp"><small>${m}분</small><span>정각</span><em>o’clock</em></div>`
       }
     </div>
     <p class="panel-en">${h}:${pad(m)} ${pm ? "PM" : "AM"}${m ? "" : " · o’clock"}</p>
-    ${notes.map((n) => `<div class="note note-${n[2]}"><span class="ko">✨ ${n[0]}</span>${n[1]}</div>`).join("")}
+    ${notes.map((n) => `<div class="note note-${n[2]}"><span class="ko">✨ ${n[0]}</span><span class="en">${n[1]}</span></div>`).join("")}
     ${
       canSpeak
         ? `<button class="btn" id="speakBtn" type="button"><span class="ko">🔊 들어 보기</span><span class="en">Listen</span></button>`
@@ -395,7 +395,7 @@ $("opts").addEventListener("click", (e) => {
 
   $("feedback").innerHTML = correct
     ? `<span class="ko">맞아요! 🎉 ${quiz.h}:${pad(quiz.m)}</span><span class="en">Correct!</span>`
-    : `<span class="ko">아쉬워요! 정답은 ‘${quiz.answer}’예요.</span>
+    : `<span class="ko">아쉬워요! 정답은 ‘${quiz.answer}’예요.</span><span class="en">Not quite — the answer is ‘${quiz.answer}’.</span>
        <span class="why">${picked.why[0]}</span><span class="en">${picked.why[1]}</span>`;
   $("scoreText").textContent = quiz.right;
   if (quiz.total >= QUIZ_LEN) {
