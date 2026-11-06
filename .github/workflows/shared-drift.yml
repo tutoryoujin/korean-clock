@@ -1,0 +1,16 @@
+# 공통 파일(css/tokens.css · css/shell.css · js/shell.js)이 원본과
+# 어긋나지 않는지 확인한다. 원본은 korean-cards/shared/ 다.
+name: shared drift
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 tools/check_shared.py

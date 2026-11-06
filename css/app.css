@@ -1,0 +1,688 @@
+/* ============================================================
+   한국어 시계 — 이 앱에만 있는 스타일.
+
+   토큰은 css/tokens.css, 헤더·푸터·메뉴는 css/shell.css 에 있다.
+   둘 다 카드 앱과 공유하는 복사본이라 여기서 고치지 않는다.
+   원본은 korean-cards/shared/ 에 있다.
+   ============================================================ */
+:root {
+  /* 본문이 480px 이라 헤더 안쪽도 같은 폭으로 맞춘다 */
+  --shell-width: 480px;
+
+  /* 뜻 이름은 악센트 8쌍의 별칭이다. 여기에 hex 를 다시 적지 말 것.
+     다크 값은 원본 쌍이 tokens.css 의 세 블록에서 바뀌므로 따라온다. */
+  --clk-hour-bg: var(--orange-bg); /* 시 · 고유어 */
+  --clk-hour-ink: var(--orange-ink);
+  --clk-min-bg: var(--lavender-bg); /* 분 · 한자어 */
+  --clk-min-ink: var(--lavender-ink);
+  --clk-ampm-bg: var(--gray-bg); /* 오전 · 오후 */
+  --clk-ampm-ink: var(--gray-ink);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+}
+html {
+  scroll-padding-top: 72px; /* sticky 헤더에 가리지 않게 */
+}
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-app);
+  font-synthesis: none; /* Jua 는 굵기가 하나뿐 — 가짜 볼드 방지 */
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+button {
+  font: inherit;
+  color: inherit;
+}
+.jua {
+  font-family: var(--font-display);
+  font-weight: 400;
+}
+
+.app {
+  flex: 1 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px 16px 0;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 4px;
+}
+.tab {
+  border: 0;
+  background: none;
+  cursor: pointer;
+  border-radius: 999px;
+  padding: 6px 4px;
+  min-height: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.1;
+}
+.tab .ko {
+  font-family: var(--font-display);
+  font-size: 1rem;
+}
+.tab .en {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+.tab[aria-selected="true"] {
+  background: var(--primary);
+  color: var(--primary-ink);
+}
+.tab[aria-selected="true"] .en {
+  color: inherit;
+  opacity: 0.8;
+}
+.tab:focus-visible,
+.btn:focus-visible,
+.opt:focus-visible,
+.ampm-btn:focus-visible,
+.step:focus-visible,
+.row:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* 탭 안의 상자끼리 띄운다 */
+section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.box {
+  background: var(--surface);
+  border-radius: 24px;
+  box-shadow: var(--shadow-card);
+  padding: 16px;
+}
+
+.segments {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+.seg {
+  border-radius: 16px;
+  padding: 8px 12px;
+  text-align: center;
+  line-height: 1.15;
+  min-width: 64px;
+}
+.seg small {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  opacity: 0.75;
+}
+.seg span {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+}
+.seg-hour {
+  background: var(--clk-hour-bg);
+  color: var(--clk-hour-ink);
+}
+.seg-min {
+  background: var(--clk-min-bg);
+  color: var(--clk-min-ink);
+}
+.seg-ampm,
+.seg-sharp {
+  background: var(--clk-ampm-bg);
+  color: var(--clk-ampm-ink);
+}
+.panel-en {
+  text-align: center;
+  font-weight: 700;
+  color: var(--muted);
+  margin: 12px 0 0;
+}
+.note {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: var(--bg);
+  border-left: 4px solid var(--clk-hour-ink);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+.note .ko {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  display: block;
+}
+
+.btn {
+  width: 100%;
+  min-height: 56px;
+  margin-top: 14px;
+  border-radius: 18px;
+  cursor: pointer;
+  border: 2px solid var(--primary);
+  background: var(--primary);
+  color: var(--primary-ink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  line-height: 1.2;
+}
+.btn .ko {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+}
+.btn .en {
+  font-size: 0.75rem;
+  font-weight: 700;
+  opacity: 0.8;
+}
+.btn.ghost {
+  background: var(--surface);
+  color: var(--ink);
+  border-color: var(--line);
+}
+.btn:active {
+  transform: scale(0.98);
+}
+
+/* Quiz */
+.score {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+}
+.score b {
+  font-family: var(--font-display);
+  font-weight: 400;
+  color: var(--ink);
+  font-size: 1rem;
+}
+.q-label {
+  text-align: center;
+  font-weight: 700;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.q-label .ko {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--ink);
+  display: block;
+}
+.opts {
+  display: grid;
+  gap: 8px;
+}
+.opt {
+  min-height: 56px;
+  border-radius: 16px;
+  border: 2px solid var(--line);
+  background: var(--surface);
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 8px;
+}
+.opt:disabled {
+  cursor: default;
+}
+.opt.right {
+  background: var(--ok-bg);
+  color: var(--ok-ink);
+  border-color: var(--ok-ink);
+}
+.opt.wrong {
+  background: var(--bad-bg);
+  color: var(--bad-ink);
+  border-color: var(--bad-ink);
+}
+.feedback {
+  text-align: center;
+  margin-top: 12px;
+  line-height: 1.4;
+}
+.feedback .ko {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  display: block;
+}
+.feedback .en {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* Quiz result */
+.result {
+  text-align: center;
+}
+.result-mascot {
+  width: 120px;
+  margin: 8px auto 0;
+}
+.result-mascot svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.result-score {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  line-height: 1.1;
+  margin: 8px 0 4px;
+}
+.result-msg .ko {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  display: block;
+}
+.result-msg .en {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+.missed {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 0;
+  display: grid;
+  gap: 6px;
+  text-align: left;
+}
+.missed li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: var(--bg);
+  font-weight: 700;
+}
+.missed li b {
+  font-family: var(--font-display);
+  font-weight: 400;
+  color: var(--ok-ink);
+}
+.missed-title {
+  margin: 16px 0 0;
+  font-weight: 700;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+/* ============================================================
+   시계판
+   ============================================================ */
+.ampm {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 4px;
+  border-radius: var(--radius-full);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  max-width: 220px;
+  margin: 0 auto 8px;
+}
+.ampm-btn {
+  border: 0;
+  background: none;
+  cursor: pointer;
+  border-radius: var(--radius-full);
+  min-height: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.1;
+}
+.ampm-btn .ko {
+  font-family: var(--font-display);
+  font-size: 1rem;
+}
+.ampm-btn .en {
+  font-size: 0.66rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+.ampm-btn[aria-checked="true"] {
+  background: var(--clk-ampm-bg);
+  color: var(--clk-ampm-ink);
+}
+.ampm-btn[aria-checked="true"] .en {
+  color: inherit;
+}
+
+.face-wrap {
+  width: min(100%, 320px);
+  margin: 0 auto;
+}
+.face-wrap.small {
+  width: min(100%, 240px);
+  margin: 10px auto 16px;
+}
+.face {
+  display: block;
+  width: 100%;
+  height: auto;
+  touch-action: none; /* 바늘을 끌 때 화면이 스크롤되지 않게 */
+  user-select: none;
+  -webkit-user-select: none;
+}
+#face {
+  cursor: grab;
+}
+#face.dragging {
+  cursor: grabbing;
+}
+.face .rim {
+  fill: var(--bg);
+  stroke: var(--line);
+  stroke-width: 2;
+}
+.face .tick {
+  stroke: var(--line);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+.face .tick.big {
+  stroke: var(--muted);
+  stroke-width: 3;
+}
+.face text {
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+.face .hour-num {
+  font-family: var(--font-app);
+  font-weight: 800;
+  font-size: 26px;
+  fill: var(--clk-hour-ink);
+}
+.face .min-num {
+  font-family: var(--font-app);
+  font-weight: 700;
+  font-size: 10.5px;
+  fill: var(--clk-min-ink);
+}
+.face .hit {
+  stroke: transparent;
+  stroke-width: 34;
+  stroke-linecap: round;
+}
+.face .stem {
+  stroke-linecap: round;
+}
+.face .hand-hour .stem {
+  stroke: var(--clk-hour-ink);
+  stroke-width: 10;
+}
+.face .hand-min .stem {
+  stroke: var(--clk-min-ink);
+  stroke-width: 6;
+}
+.face .knob {
+  stroke-width: 3;
+  transition: r 0.1s ease;
+}
+.face .knob-hour .knob {
+  fill: var(--clk-hour-bg);
+  stroke: var(--clk-hour-ink);
+}
+.face .knob-min .knob {
+  fill: var(--clk-min-bg);
+  stroke: var(--clk-min-ink);
+}
+.face .knob-text {
+  font-family: var(--font-display);
+  font-size: 15px;
+  pointer-events: none;
+}
+.face .knob-hour .knob-text {
+  fill: var(--clk-hour-ink);
+}
+.face .knob-min .knob-text {
+  fill: var(--clk-min-ink);
+}
+.face .knob-g {
+  outline: none;
+}
+.face .knob-g.active .knob {
+  r: 18;
+}
+/* SVG 안의 바늘은 outline 이 안 그려져서 손잡이 둘레로 대신한다 */
+.face .knob-g:focus-visible .knob {
+  stroke: var(--primary);
+  stroke-width: 5;
+}
+.face .cap {
+  fill: var(--ink);
+}
+
+.hint {
+  text-align: center;
+  margin: 6px 0 0;
+  line-height: 1.3;
+}
+.hint .ko {
+  font-family: var(--font-display);
+  display: block;
+}
+.hint .en {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-top: 12px;
+}
+.step {
+  min-height: 44px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line);
+  background: var(--bg);
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 1rem;
+}
+.step small {
+  font-family: var(--font-display);
+  font-weight: 400;
+  margin-left: 2px;
+}
+.step:active {
+  transform: scale(0.97);
+}
+
+/* 읽은 결과 */
+.digits {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  text-align: center;
+  margin: 2px 0 12px;
+}
+.note-hour {
+  border-left-color: var(--clk-hour-ink);
+}
+.note-min {
+  border-left-color: var(--clk-min-ink);
+}
+
+/* ============================================================
+   읽는 법
+   ============================================================ */
+.rule-head {
+  text-align: center;
+  margin-bottom: 12px;
+  line-height: 1.35;
+}
+.rule-head .ko {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  display: block;
+}
+.rule-head .en {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+.rule-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.rule {
+  border-radius: var(--radius-lg);
+  padding: 12px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1.2;
+}
+.rule small {
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+.rule b {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.6rem;
+}
+.rule span {
+  font-family: var(--font-display);
+  font-size: 1rem;
+}
+.rule em {
+  font-style: normal;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.rule-hour {
+  background: var(--clk-hour-bg);
+  color: var(--clk-hour-ink);
+}
+.rule-min {
+  background: var(--clk-min-bg);
+  color: var(--clk-min-ink);
+}
+
+.sec-title {
+  margin: 0 0 10px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+.sec-title .ko {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  display: block;
+}
+.sec-title .en {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.row {
+  width: 100%;
+  min-height: 52px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line);
+  background: var(--bg);
+  cursor: pointer;
+  padding: 6px 10px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: 8px;
+  text-align: left;
+}
+.row .num {
+  font-weight: 800;
+  font-size: 0.8rem;
+  color: var(--muted);
+  min-width: 2.6em;
+}
+.row .word {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+}
+.row-hour .word {
+  color: var(--clk-hour-ink);
+}
+.row-min .word {
+  color: var(--clk-min-ink);
+}
+.row .base {
+  grid-column: 2;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+/* 퀴즈 피드백 — 왜 틀렸는지 */
+.feedback .why {
+  font-family: var(--font-display);
+  display: block;
+  margin-top: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .face .knob {
+    transition: none;
+  }
+  .btn:active,
+  .step:active {
+    transform: none;
+  }
+}
