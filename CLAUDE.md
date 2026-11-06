@@ -2,7 +2,7 @@
 
 자매 앱과 디자인 시스템을 공유합니다. **화면에 보이는 것(CSS·마크업·색·글꼴·카피)을 건드리기 전에 읽으세요.**
 
-**https://claude.ai/artifact/C1LfGgisHTtDbmy7NyoUtF**
+**https://claude.ai/artifact/CEpgfyaaxJuP8MysgFHWbH**
 
 Artifact 툴의 `read` 로 `project/README.md` 를 먼저 읽습니다. 토큰은 `project/tokens.json`, 컴포넌트는 `project/components/<이름>/README.md` 에 있습니다.
 
